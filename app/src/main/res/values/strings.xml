@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">eCountDown</string>
+    <string name="banner_home_footer">ca-app-pub-6693778118004814/7976139280</string>
+    <string name="interstitial_full_screen">ca-app-pub-6693778118004814/9668271349</string>
+    <string name="No_event">No Events on this month!</string>
+
+    <!-- Add event validation-->
+    <string name="Category_name_require">Category name is require!</string>
+    <string name="Event_photo_require">Please provide event photo!</string>
+    <string name="Event_title_require">Please provide event title!</string>
+    <string name="Event_title_minimum">Event title is too long. please shorten it and try again!</string>
+    <string name="Event_description_require">Please provide event description!</string>
+    <string name="Event_date_require">Please provide event date!</string>
+    <string name="Event_end_date_require">Please provide event end date!</string>
+    <string name="Event_end_date_greater">End date should be greater then Start date!</string>
+    <string name="age_require">Please Provide Age!</string>
+    <string name="age_greater_than_zero">Age must be greater than 0.</string>
+
+
+    <string name="Event_description_minimum">Event description is too long. please shorten it and try again!</string>
+    <string name="Category_require">Please provide category!</string>
+
+    <string name="time_ago_prefix"></string>
+    <string name="time_ago_suffix">ago</string>
+    <string name="time_ago_seconds">less than a minute</string>
+    <string name="time_ago_minute">about a minute</string>
+    <string name="time_ago_minutes">%d minutes</string>
+    <string name="time_ago_hour">about an hour</string>
+    <string name="time_ago_hours">about %d hours</string>
+    <string name="time_ago_day">a day</string>
+    <string name="time_ago_days">%d days</string>
+    <string name="time_ago_month">about a month</string>
+    <string name="time_ago_months">%d months</string>
+    <string name="time_ago_year">about a year</string>
+    <string name="time_ago_years">%d years</string>
+
+
+
+
+
+    <string name="Create_new_Category">Create a New Category</string>
+    <string name="Done">Done</string>
+</resources>

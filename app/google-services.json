@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "421478500307",
+    "firebase_url": "https://ecountdown-464db.firebaseio.com",
+    "project_id": "ecountdown-464db",
+    "storage_bucket": "ecountdown-464db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:421478500307:android:33ec45646800c089",
+        "android_client_info": {
+          "package_name": "com.aipxperts.ecountdown"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "421478500307-ajk9a9m03ro69m3l5tved5d18cr10sbf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChFDHPckugjlEsvIfjcUsL2LOoux7BvO0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
