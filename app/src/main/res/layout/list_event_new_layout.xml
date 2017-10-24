@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <FrameLayout
+        android:id="@+id/fm_event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/img_event_set"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/black_5"
+            />
+        <LinearLayout
+            android:id="@+id/ll_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:id="@+id/ll1"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                >
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.60"
+                    android:layout_gravity="left"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+                    <com.aipxperts.ecountdown.Widget.TextView_Bold
+                        android:id="@+id/txt_event_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="mount abu"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        style="@style/Text_bold_font"/>
+                    <com.aipxperts.ecountdown.Widget.TextView_Regular
+                        android:id="@+id/txt_event_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Event Starts on Sunday,16 july 2017"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        style="@style/Text_regular_font"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_past_future"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.40"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:visibility="visible"
+                    android:orientation="vertical"
+                    >
+                    <com.aipxperts.ecountdown.Widget.TextView_Regular
+                        android:id="@+id/txt_count"
+                        style="@style/Text_regular_font"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:textColor="@color/white"
+                        android:gravity="right"
+                        android:layout_marginRight="40dp"
+                        android:textSize="19sp"
+                        android:text="sd" />
+                    <com.aipxperts.ecountdown.Widget.TextView_Regular
+                        android:id="@+id/txt_event_count_down"
+                        style="@style/Text_regular_font"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:gravity="right"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:text="minutes until" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_current"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.50"
+                    android:gravity="right"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:visibility="gone"
+                    android:orientation="vertical"
+                    >
+                    <com.aipxperts.ecountdown.Widget.TextView_Regular
+                        android:id="@+id/txt_event_count_down1"
+                        style="@style/Text_regular_font"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="19sp"
+                        android:text="Today" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+</layout>

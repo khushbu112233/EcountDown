@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/edit_bg_curve1"
+   >
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="400dp"
+        android:padding="25dp"
+        android:orientation="vertical" >
+        <com.aipxperts.ecountdown.Widget.Edittext_Regular
+            android:id="@+id/edt_event_category"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:hint="Category Name"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:singleLine="true"
+            android:inputType="textCapSentences"
+            android:background="@drawable/edit_bg_curve1"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:imeOptions="actionDone"
+            style="@style/edit_style1"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:orientation="vertical">
+
+            <com.aipxperts.ecountdown.Widget.TextView_Regular
+                android:id="@+id/txtBackgruondColor"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:text="Select a color"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/edittextsize2"
+                android:visibility="visible" />
+            <GridView
+                android:id="@+id/gridColor"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:numColumns="4"
+                android:stretchMode="columnWidth"/>
+
+
+        </LinearLayout>
+
+        <com.aipxperts.ecountdown.Widget.TextView_Bold
+            android:id="@+id/txt_done"
+            style="@style/Text_regular_font"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/done_bg_curve"
+            android:gravity="bottom|center"
+            android:text="Done"
+            android:padding="10dp"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</RelativeLayout>

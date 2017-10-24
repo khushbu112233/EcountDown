@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/drawer_bg"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/ll_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="#80000000"
+            android:weightSum="1" >
+
+            <com.aipxperts.ecountdown.Widget.TextView_Regular
+                android:id="@+id/txt_Recent"
+                android:layout_width="0dp"
+                android:layout_weight="0.33"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="All"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <com.aipxperts.ecountdown.Widget.TextView_Regular
+                android:id="@+id/txt_Future"
+                android:layout_width="0dp"
+                android:layout_weight="0.33"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="Future"
+                android:textColor="@color/un_select_header"
+                android:textSize="15sp" />
+
+            <com.aipxperts.ecountdown.Widget.TextView_Regular
+                android:id="@+id/txt_Past"
+                android:layout_width="0dp"
+                android:layout_weight="0.33"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="Past"
+                android:textColor="@color/un_select_header"
+                android:textSize="15sp" />
+        </LinearLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:layout_below="@+id/ll_1"
+            android:layout_marginTop="20dp"
+            android:overScrollMode="never"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            app:fabSize="auto"
+            style="@style/Widget.Design.FloatingActionButton"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/imported" />
+
+    </RelativeLayout>
+</layout>

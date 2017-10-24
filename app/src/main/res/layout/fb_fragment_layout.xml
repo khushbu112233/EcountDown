@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/ll_no_events"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+            <com.aipxperts.ecountdown.Widget.TextView_Regular
+                android:id="@+id/txt_event_name"
+                style="@style/Text_regular_font"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Login to view facebook events and birthdays"
+                android:textSize="25sp" />
+            <ImageView
+                android:id="@+id/img_no_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:src="@mipmap/fb_login" />
+
+
+        </LinearLayout>
+        <com.aipxperts.ecountdown.Widget.TextView_Regular
+            android:id="@+id/txt_backup"
+            style="@style/Text_regular_font"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:text="backup"
+            android:textSize="25sp" />
+        <com.aipxperts.ecountdown.Widget.TextView_Regular
+            android:id="@+id/txt_Restore"
+            style="@style/Text_regular_font"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:text="Restore"
+            android:textSize="25sp" />
+        <com.aipxperts.ecountdown.Widget.TextView_Regular
+            android:id="@+id/txt_send_mail"
+            style="@style/Text_regular_font"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:text="Send Mail"
+            android:textSize="25sp" />
+
+    </LinearLayout>
+</layout>

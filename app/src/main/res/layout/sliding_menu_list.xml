@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content">
+            <ImageView android:id="@+id/mProfileBgImg"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"/>
+            <RelativeLayout
+                android:id="@+id/rel_profile"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content">
+                <com.aipxperts.ecountdown.Widget.CircularImageView
+                    android:id="@+id/mProfileImg"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@mipmap/profile_female"
+                    android:layout_centerHorizontal="true"
+                    />
+                <com.aipxperts.ecountdown.Widget.TextView_Bold
+                    android:id="@+id/mNameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/mProfileImg"
+                    android:textColor="@color/drawer_font"
+                    android:textSize="16sp"/>
+            </RelativeLayout>
+        </FrameLayout>
+        <ListView
+            android:id="@+id/list_slidermenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:divider="@null"
+
+            />
+    </LinearLayout>
+</layout>
