@@ -1,5 +1,6 @@
 package com.aipxperts.ecountdown.Adapter;
 
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -41,5 +42,9 @@ public class EventPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return mNumOfTabs;
+    }
+    @Override
+    public void restoreState(Parcelable arg0, ClassLoader arg1) {
+        //do nothing here! no call to super.restoreState(arg0, arg1);
     }
 }

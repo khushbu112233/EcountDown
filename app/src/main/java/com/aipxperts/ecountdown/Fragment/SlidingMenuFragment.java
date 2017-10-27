@@ -16,6 +16,7 @@ import com.aipxperts.ecountdown.Adapter.NavDrawerListAdapter;
 import com.aipxperts.ecountdown.Model.UProfile;
 import com.aipxperts.ecountdown.R;
 import com.aipxperts.ecountdown.databinding.SlidingMenuListBinding;
+import com.aipxperts.ecountdown.utils.Pref;
 import com.labo.kaji.fragmentanimations.MoveAnimation;
 
 import java.util.ArrayList;
@@ -48,9 +49,16 @@ public class SlidingMenuFragment extends Fragment {
         mBinding.relProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ProfileFragment fragment = new ProfileFragment();
-                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
-                ((DashBoardActivity)context).slidingMenu.toggle();
+
+                if(!Pref.getValue(context,"last_open","").equals("profile")) {
+                    ProfileFragment fragment = new ProfileFragment();
+                    ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
+                    ((DashBoardActivity) context).slidingMenu.toggle();
+                    Pref.setValue(context,"last_open","profile");
+                }
+                else {
+                    ((DashBoardActivity) context).slidingMenu.toggle();
+                }
             }
         });
         ((DashBoardActivity)context).slidingMenu.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {

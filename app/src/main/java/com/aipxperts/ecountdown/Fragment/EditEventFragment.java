@@ -23,6 +23,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,6 +116,7 @@ public class EditEventFragment extends Fragment{
     File storeDirectory;
     String storePath = "";
     public String formattedDate;
+    String cat_id;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -148,18 +150,20 @@ public class EditEventFragment extends Fragment{
 */
 
 
-        onClickTick = new OnClickTick() {
+     /*   onClickTick = new OnClickTick() {
             @Override
             public void OnClickTick(int position, final String id, final String name, String color) {
 
                 dialog.dismiss();
+                Log.e("name",""+name);
                 mBinding.edtEventCategory1.setText(name);
                 if(!id.equalsIgnoreCase("")) {
+                    cat_id = id;
                     UpdateCategory(id);
                     selected_color= color;
                 }
             }
-        };
+        };*/
         mBinding.edtEventTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -388,7 +392,6 @@ public class EditEventFragment extends Fragment{
 
                 if(err_cnt==0) {
                     ((DashBoardActivity)context).mBinding.includeHeader.txtDone.setEnabled(false);
-
                     updateEventFromdb();
                     final RealmResults<Event> event = realm.where(Event.class).equalTo("is_cover", "1").findAll();
                     if(Pref.getValue(context,"edit_from","").equalsIgnoreCase("detail"))
@@ -640,6 +643,7 @@ public class EditEventFragment extends Fragment{
 
                 }
             });
+
         }
     }
 
@@ -705,175 +709,6 @@ public class EditEventFragment extends Fragment{
 
 
 
-    /*
-        @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
-            super.onActivityCreated(savedInstanceState);
-
-            getView().setFocusableInTouchMode(true);
-            getView().requestFocus();
-
-            getView().setOnKeyListener(new View.OnKeyListener() {
-
-                @Override
-                public boolean onKey(View v, int keyCode, KeyEvent event) {
-                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                        if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-                            Pref.setValue(context,"updated","0");
-
-                            ((FragmentActivity)context).getSupportFragmentManager().popBackStack();
-
-                             return true;
-                        }
-                    }
-                    return false;
-                }
-            });
-        }*/
-    /*
-        public void openDialog() {
-            dialog=new Dialog(context);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.option_select_new);
-            // dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            GridView ll_category_list = (GridView)dialog.findViewById(R.id.ll_category_list);
-            ImageView iv_category = (ImageView)dialog.findViewById(R.id.iv_category);
-            categoryAdapter = new CategoryAdapter(context,categoryArrayList);
-            ll_category_list.setAdapter(categoryAdapter);
-            categoryAdapter.onClickTick(onClickTick);
-            categoryAdapter.notifyDataSetChanged();
-
-            ll_category_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Log.e("selected category",""+categories.get(position));
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.show();
-        }*/
-   /* public void openDialog_for_add() {
-        ArrayList<ColorModel> colorList = new ArrayList<>();
-        colorList = Utils.colorList();
-
-        ArrayList<String> colorName = new ArrayList<>();
-        for (int i = 0; i < (colorList.size()); i++) {
-
-            colorName.add(colorList.get(i).color);
-
-        }
-        dialog1=new Dialog(context, R.style.DialogSlideAnim);
-        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog1.setContentView(R.layout.add_new_category);
-        dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        final Edittext_Regular edt_event_category =(Edittext_Regular)dialog1.findViewById(R.id.edt_event_category);
-        final TextView_Regular txtBackgruondColor = (TextView_Regular)dialog1.findViewById(R.id.txtBackgruondColor);
-        TextView_Regular txt_done = (TextView_Regular)dialog1.findViewById(R.id.txt_done);
-        ColorAdapter adapter=new ColorAdapter(context,colorName);
-
-        final ArrayList<ColorModel> finalColorList = colorList;
-        spinner1.setAdapter(adapter);
-        txtBackgruondColor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Utils.hideKeyboard(context);
-                hideKeyboard();
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //Do something after 100ms
-                        spinner1.performClick();
-                    }
-                }, 500);
-
-
-
-            }
-        });
-        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                isclick=true;
-                if(position==0) {
-                    if(!selected_color.equalsIgnoreCase(""))
-                        txtBackgruondColor.setTextColor(Color.parseColor(selected_color));
-
-
-                }else if(position>0)
-                {
-                    selected_color = finalColorList.get(position).color;
-                    txtBackgruondColor.setTextColor(Color.parseColor(selected_color));
-
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        txt_done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        Long tsLong = System.currentTimeMillis() / 1000;
-                        String ts = tsLong.toString();
-                        // Add a Category
-                        Category event_category = realm.createObject(Category.class);
-                        String  uuid = UUID.randomUUID().toString();
-                        event_category.setCategoryId(uuid);
-                        event_category.setCategoryName(edt_event_category.getText().toString());
-                        event_category.setCategoryColor(selected_color);
-                        event_category.setIsNew("1");
-                        event_category.setSelected("0");
-
-                    }
-                });
-                dialog1.dismiss();
-                categoryArrayList.clear();
-                GetDefaultCategory();
-                categoryAdapter.notifyDataSetChanged();
-            }
-        });
-       *//* edt_event_category.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    realm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            Long tsLong = System.currentTimeMillis() / 1000;
-                            String ts = tsLong.toString();
-                            // Add a Category
-                            Category event_category = realm.createObject(Category.class);
-                            String  uuid = UUID.randomUUID().toString();
-                            event_category.setCategoryId(uuid);
-                            event_category.setCategoryName(edt_event_category.getText().toString());
-                            event_category.setCategoryColor("#ff0000");
-                            event_category.setIsNew("1");
-                            event_category.setSelected("0");
-
-                        }
-                    });
-                    dialog1.dismiss();
-                    categoryArrayList.clear();
-                    GetDefaultCategory();
-                    categoryAdapter.notifyDataSetChanged();
-                    return true;
-                }
-                return false;
-            }
-        });*//*
-
-        dialog1.show();
-    }*/
     public void hideKeyboard() {
         View view = getActivity().getCurrentFocus();
         if (view != null) {
@@ -1032,8 +867,20 @@ public class EditEventFragment extends Fragment{
         {
             if (categoryArrayList.size() > 0) {
                 for (int i = 0; i < categoryArrayList.size(); i++) {
-                    if (categoryArrayList.get(i).getSelected().equalsIgnoreCase("1")) {
+
+                    if(!((DashBoardActivity)context).getcategoryName().equalsIgnoreCase(""))
+                    {
+
+                        mBinding.edtEventCategory1.setText(((DashBoardActivity)context).getcategoryName());
+                    }else
+                    {
                         mBinding.edtEventCategory1.setText(categoryArrayList.get(i).getCategoryName());
+
+                    }
+                    if(!((DashBoardActivity)context).getcategoryColor().equalsIgnoreCase(""))
+                    {
+                        selected_color=((DashBoardActivity)context).getcategoryColor();
+                    }else {
                         selected_color = categoryArrayList.get(i).getCategoryColor();
                     }
                 }
@@ -1083,6 +930,12 @@ public class EditEventFragment extends Fragment{
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
+
+                ((DashBoardActivity)context).setCategoryId("");
+                ((DashBoardActivity)context).setCategoryName("");
+                ((DashBoardActivity)context).setCategoryColor("");
+                Pref.setValue(context,"updated","");
+
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
@@ -1237,7 +1090,7 @@ public class EditEventFragment extends Fragment{
             }
         });
         //eventArrayList.add(events1[cat]);
-
+        UpdateCategory(((DashBoardActivity)context).getcategoryID());
     }
 
     /**
@@ -1442,5 +1295,29 @@ public class EditEventFragment extends Fragment{
         }
 
         return mediaFile;
+    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+
+
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        ((DashBoardActivity)context).setCategoryId("");
+                        ((DashBoardActivity)context).setCategoryName("");
+                        ((DashBoardActivity)context).setCategoryColor("");
+                        Pref.setValue(context,"updated","");
+                        ((FragmentActivity)context).getSupportFragmentManager().popBackStack();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 }

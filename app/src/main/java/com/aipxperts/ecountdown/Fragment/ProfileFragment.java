@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -35,7 +36,7 @@ public class ProfileFragment extends Fragment {
     ProfileLayoutBinding mBinding;
     View rootView;
     Context context;
-    String Gender="";
+    String Gender = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,13 +49,12 @@ public class ProfileFragment extends Fragment {
         preview();
 
         final RealmResults<UProfile> profile = realm.where(UProfile.class).findAll();
-        if(profile.size()>0) {
+        if (profile.size() > 0) {
             Log.e("profile", "" + profile.get(0).getAge() + "  " + profile.get(0).getU_Gender());
-            Gender =profile.get(0).getU_Gender() ;
+            Gender = profile.get(0).getU_Gender();
             mBinding.edtAge.setText(profile.get(0).getAge());
         }
-        if(Gender.equalsIgnoreCase(""))
-        {
+        if (Gender.equalsIgnoreCase("")) {
             mBinding.mProfileImg.setImageResource(R.mipmap.profile_female);
             mBinding.mFemale.setImageResource(R.mipmap.female_select);
             mBinding.mMale.setImageResource(R.mipmap.male_unselect);
@@ -62,20 +62,18 @@ public class ProfileFragment extends Fragment {
 
             mBinding.txtFemale.setTextColor(getResources().getColor(R.color.select));
             mBinding.txtMale.setTextColor(getResources().getColor(R.color.un_Select));
-        }else if(Gender.equalsIgnoreCase("Female"))
-        {
+        } else if (Gender.equalsIgnoreCase("Female")) {
             mBinding.mProfileImg.setImageResource(R.mipmap.profile_female);
             mBinding.mFemale.setImageResource(R.mipmap.female_select);
             mBinding.mMale.setImageResource(R.mipmap.male_unselect);
             Gender = "Female";
             mBinding.txtFemale.setTextColor(getResources().getColor(R.color.select));
             mBinding.txtMale.setTextColor(getResources().getColor(R.color.un_Select));
-        }else if(Gender.equalsIgnoreCase("Male"))
-        {
+        } else if (Gender.equalsIgnoreCase("Male")) {
             mBinding.mProfileImg.setImageResource(R.mipmap.male_profile);
             mBinding.mFemale.setImageResource(R.mipmap.female_unselect);
             mBinding.mMale.setImageResource(R.mipmap.male_select);
-            Gender="Male";
+            Gender = "Male";
             mBinding.txtFemale.setTextColor(getResources().getColor(R.color.un_Select));
             mBinding.txtMale.setTextColor(getResources().getColor(R.color.select));
         }
@@ -98,7 +96,7 @@ public class ProfileFragment extends Fragment {
                 mBinding.mProfileImg.setImageResource(R.mipmap.male_profile);
                 mBinding.mFemale.setImageResource(R.mipmap.female_unselect);
                 mBinding.mMale.setImageResource(R.mipmap.male_select);
-                Gender="Male";
+                Gender = "Male";
                 mBinding.txtFemale.setTextColor(getResources().getColor(R.color.un_Select));
                 mBinding.txtMale.setTextColor(getResources().getColor(R.color.select));
             }
@@ -110,15 +108,13 @@ public class ProfileFragment extends Fragment {
                 if (mBinding.edtAge.getText().toString().trim().equalsIgnoreCase("")) {
                     err_cnt++;
                     Toast.makeText(context, getString(R.string.age_require), Toast.LENGTH_LONG).show();
-                }else if(mBinding.edtAge.getText().toString().trim().equalsIgnoreCase("0"))
-                {
+                } else if (mBinding.edtAge.getText().toString().trim().equalsIgnoreCase("0")) {
                     err_cnt++;
                     Toast.makeText(context, getString(R.string.age_greater_than_zero), Toast.LENGTH_LONG).show();
                 }
 
                 if (err_cnt == 0) {
-                    if(profile.size()>0)
-                    {
+                    if (profile.size() > 0) {
                         realm.executeTransaction(new Realm.Transaction() {
                             @Override
                             public void execute(Realm realm) {
@@ -136,8 +132,7 @@ public class ProfileFragment extends Fragment {
                                 //    getActivity().getSupportFragmentManager().popBackStack();
                             }
                         });
-                    }else
-                    {
+                    } else {
                         realm.executeTransaction(new Realm.Transaction() {
                             @Override
                             public void execute(Realm realm) {
@@ -150,12 +145,12 @@ public class ProfileFragment extends Fragment {
                         });
                     }
                     ListEventFragment fragment = new ListEventFragment();
-                    ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
+                    ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
                     // Pref.setValue(context, "cur_fragment", "1");
-                    Toast.makeText(context,"Profile updated successful.",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Profile updated successful.", Toast.LENGTH_LONG).show();
 
                     if (view != null) {
-                        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
                 }
@@ -164,35 +159,37 @@ public class ProfileFragment extends Fragment {
         });
         return rootView;
     }
+
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
 
         return MoveAnimation.create(MoveAnimation.LEFT, enter, 500);
 
     }
+
     private void preview() {
 
       /*  ((DashBoardActivity)context).mBinding.footer.imgCalendar.setImageResource(R.mipmap.calendar_deselect);
         ((DashBoardActivity)context).mBinding.footer.imgCountDown.setImageResource(R.mipmap.countdown_deselect);
         ((DashBoardActivity)context).mBinding.footer.imgFb.setImageResource(R.mipmap.user_profile_select);
         ((DashBoardActivity)context).mBinding.footer.imgSettings.setImageResource(R.mipmap.setting_deselect);
-      */  ((DashBoardActivity)context).mBinding.includeHeader.txtTitle.setText("Profile");
-        ((DashBoardActivity)context).mBinding.includeHeader.imgBack.setVisibility(View.GONE);
-        ((DashBoardActivity)context).mBinding.includeHeader.imgDrawer.setVisibility(View.VISIBLE);
-        ((DashBoardActivity)context).mBinding.includeHeader.txtDone.setVisibility(View.GONE);
-      //  ((DashBoardActivity)context).mBinding.footer.llFooter.setVisibility(View.VISIBLE);
-        ((DashBoardActivity)context).mBinding.includeHeader.imgOptionMenu.setVisibility(View.GONE);
+      */
+        ((DashBoardActivity) context).mBinding.includeHeader.txtTitle.setText("Profile");
+        ((DashBoardActivity) context).mBinding.includeHeader.imgBack.setVisibility(View.GONE);
+        ((DashBoardActivity) context).mBinding.includeHeader.imgDrawer.setVisibility(View.VISIBLE);
+        ((DashBoardActivity) context).mBinding.includeHeader.txtDone.setVisibility(View.GONE);
+        //  ((DashBoardActivity)context).mBinding.footer.llFooter.setVisibility(View.VISIBLE);
+        ((DashBoardActivity) context).mBinding.includeHeader.imgOptionMenu.setVisibility(View.GONE);
 
-        if(Pref.getValue(context,"add_display","").equalsIgnoreCase("0"))
-        {
-            ((DashBoardActivity)context).mBinding.adView.setVisibility(View.GONE);
+        if (Pref.getValue(context, "add_display", "").equalsIgnoreCase("0")) {
+            ((DashBoardActivity) context).mBinding.adView.setVisibility(View.GONE);
 
-        }else
-        {
-            ((DashBoardActivity)context).mBinding.adView.setVisibility(View.VISIBLE);
+        } else {
+            ((DashBoardActivity) context).mBinding.adView.setVisibility(View.VISIBLE);
 
         }
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -206,11 +203,18 @@ public class ProfileFragment extends Fragment {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-                        if(((DashBoardActivity)context).slidingMenu.isMenuShowing()){
-                            ((DashBoardActivity)context).slidingMenu.toggle();
-                        }
-                        else{
-                            getActivity().getSupportFragmentManager().popBackStack();
+                        if (((DashBoardActivity) context).slidingMenu.isMenuShowing()) {
+                            ((DashBoardActivity) context).slidingMenu.toggle();
+                        } else {
+                            FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+
+                            for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
+                                fragmentManager.popBackStack();
+                            }
+
+                            ListEventFragment fragment = new ListEventFragment();
+                            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().add(R.id.frame_main_container, fragment).commit();
+                            //getActivity().getSupportFragmentManager().popBackStack();
                         }
                         return true;
                     }

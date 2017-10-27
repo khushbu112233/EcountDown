@@ -4,10 +4,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
@@ -33,10 +36,10 @@ import com.aipxperts.ecountdown.Widget.TextView_Regular;
 import com.aipxperts.ecountdown.utils.Constants;
 import com.aipxperts.ecountdown.utils.Pref;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
@@ -45,7 +48,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import io.realm.Realm;
 
@@ -232,28 +234,46 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
                 str_share = str_share + "Event Category:" +eventArrayList.get(item).getCategory() +"\n";
                 */
                 str_share = eventArrayList.get(item).getEvent_image();
+
                 new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected Void doInBackground(Void... params) {
-                        Looper.prepare();
-                        try {
-                            Bitmap theBitmap = Glide.with(context).
-                                    load(str_share).asBitmap().override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).
-                                    into(400, 400).get();
-                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                            theBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                            byte[] byteArray = byteArrayOutputStream .toByteArray();
+                        Constants.showProgress(context);
+                        // Looper.prepare();
+                        /* Bitmap theBitmap = Glide.with(context).
+                                 load(str_share).asBitmap().override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).
+                                 into(400, 400).get();*/
+                        if(str_share.length()<200) {
+                            BitmapFactory.Options options = new BitmapFactory.Options();
+                            // downsizing image as it throws OutOfMemory Exception for larger
+                            // images
+                            options.inSampleSize = 2;
+                            Bitmap temp = BitmapFactory.decodeFile(str_share,
+                                    options);
 
-                            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                            Log.e("theBitmap",""+encoded);
-                            eventArrayList.get(item).setEvent_image("");
-                            if(!encoded.equalsIgnoreCase("")) {
-                                eventArrayList.get(item).setEvent_image(encoded);
+                            Log.e("width",temp.getWidth()+" "+temp.getHeight());
+                            Bitmap theBitmap=null;
+                            if(temp.getWidth()>450 || temp.getHeight()>450) {
+                                theBitmap = getResizedBitmap(temp, 450, 450);
                             }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
+                            else {
+                                theBitmap = temp;
+                            }
+
+                            if (theBitmap != null) {
+                                //  Log.e("theBitmap", "bitmap:" + theBitmap);
+
+                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                theBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                                byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+                                String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+                                eventArrayList.get(item).setEvent_image("");
+                                if (!encoded.equalsIgnoreCase("")) {
+                                    eventArrayList.get(item).setEvent_image(encoded);
+                                }
+                            }
                         }
                         return null;
                     }
@@ -334,7 +354,33 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         });
 
     }
-
+    private Bitmap decodeFile(String imgPath)
+    {
+        Bitmap b = null;
+        int max_size = 1000;
+        File f = new File(imgPath);
+        try {
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            FileInputStream fis = new FileInputStream(f);
+            BitmapFactory.decodeStream(fis, null, o);
+            fis.close();
+            int scale = 1;
+            if (o.outHeight > max_size || o.outWidth > max_size)
+            {
+                scale = (int) Math.pow(2, (int) Math.ceil(Math.log(max_size / (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+            }
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            fis = new FileInputStream(f);
+            b = BitmapFactory.decodeStream(fis, null, o2);
+            fis.close();
+        }
+        catch (Exception e)
+        {
+        }
+        return b;
+    }
     /**
      * for delete event
      */
@@ -392,29 +438,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
                         });
 
 
-               /* realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        RealmResults<Event> event = realm.where(Event.class).findAll();
-                        if (event.size() > 0) {
-                            for (int i = 0; i < event.size(); i++) {
-                                if (event.get(i).getIs_cover().equalsIgnoreCase("1")) {
-                                    Pref.setValue(context, "set_as_cover_click", event.get(i).getEvent_image());
-                                    Pref.setValue(context, "set_as_cover_des", event.get(i).getEvent_description());
-                                    Pref.setValue(context, "set_as_cover_title", event.get(i).getEvent_name());
-                                    Pref.setValue(context, "set_as_cover_date", event.get(i).getDate());
-                                } else {
-                                    Pref.setValue(context, "set_as_cover_click", event.get(0).getEvent_image());
-                                    Pref.setValue(context, "set_as_cover_des", event.get(0).getEvent_description());
-                                    Pref.setValue(context, "set_as_cover_title", event.get(0).getEvent_name());
-                                    Pref.setValue(context, "set_as_cover_date", event.get(0).getDate());
 
-                                }
-                            }
-                        }
-                    }
-                });
-*/
                 dialog.dismiss();
                 Toast.makeText(context, "Event deleted successfully.", Toast.LENGTH_LONG).show();
             }
@@ -422,4 +446,22 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         dialog.show();
 
     }
+    public Bitmap getResizedBitmap(Bitmap bitmap, int newWidth, int newHeight) {
+        Bitmap resizedBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
+
+        float scaleX = newWidth / (float) bitmap.getWidth();
+        float scaleY = newHeight / (float) bitmap.getHeight();
+        float pivotX = 0;
+        float pivotY = 0;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(scaleX, scaleY, pivotX, pivotY);
+
+        Canvas canvas = new Canvas(resizedBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return resizedBitmap;
+    }
+
 }

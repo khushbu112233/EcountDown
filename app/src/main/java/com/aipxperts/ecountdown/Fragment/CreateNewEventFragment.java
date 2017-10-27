@@ -263,6 +263,8 @@ public class CreateNewEventFragment extends Fragment {
                     ((DashBoardActivity)context).mBinding.includeHeader.txtDone.setEnabled(false);
                     Pref.setValue(context, "from_tab", "recent");
                     AddDatabase();
+
+
                     ListEventFragment fragment = new ListEventFragment();
                     ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
 
@@ -491,6 +493,7 @@ public class CreateNewEventFragment extends Fragment {
                     }
                 });
             }
+
         } else if (eventArrayList.size() == 0) {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
@@ -501,7 +504,8 @@ public class CreateNewEventFragment extends Fragment {
                     Event event = realm.createObject(Event.class);
 
                     event.set_token(Pref.getValue(context, Constants.Token_tag, ""));
-                    event.setEvent_uuid(UUID.randomUUID().toString());
+                    uuid = UUID.randomUUID().toString();
+                    event.setEvent_uuid(uuid);
                     event.setEvent_name(mBinding.edtEventTitle.getText().toString());
                     event.setEvent_description(mBinding.edtEventDescription.getText().toString());
                     event.setEvent_image(storePath);
@@ -516,6 +520,7 @@ public class CreateNewEventFragment extends Fragment {
                     event.setOperation("1");
                 }
             });
+
         }
 
     /*    final RealmResults<Event> event = realm.where(Event.class).equalTo("is_cover", "1").findAll();
@@ -535,6 +540,7 @@ public class CreateNewEventFragment extends Fragment {
                 }
             }
         }*/
+
     }
     public void AddDefaultCategory() {
         Pref.setValue(context,"add_category","1");
@@ -737,8 +743,19 @@ public class CreateNewEventFragment extends Fragment {
             GetDefaultCategory1();
             if (categoryArrayList.size() > 0) {
                 for (int i = 0; i < categoryArrayList.size(); i++) {
-                    if (categoryArrayList.get(i).getSelected().equalsIgnoreCase("1")) {
+                    if(!((DashBoardActivity)context).getcategoryName().equalsIgnoreCase(""))
+                    {
+
+                        mBinding.edtEventCategory1.setText(((DashBoardActivity)context).getcategoryName());
+                    }else
+                    {
                         mBinding.edtEventCategory1.setText(categoryArrayList.get(i).getCategoryName());
+
+                    }
+                    if(!((DashBoardActivity)context).getcategoryColor().equalsIgnoreCase(""))
+                    {
+                        selected_color=((DashBoardActivity)context).getcategoryColor();
+                    }else {
                         selected_color = categoryArrayList.get(i).getCategoryColor();
                     }
                 }

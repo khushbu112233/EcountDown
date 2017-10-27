@@ -201,6 +201,7 @@ public class ListEventFragment extends Fragment {
 
     public void getdata( Uri selectedFileURI , File f) throws URISyntaxException {
 
+
         FileInputStream fi;
         try {
             fi = (FileInputStream)context. getContentResolver().openInputStream(selectedFileURI);
@@ -230,7 +231,7 @@ public class ListEventFragment extends Fragment {
                     }
                     Bitmap bitmap = decodeBase64(ev1.getEvent_image());
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100 , bos);
                     byte[] bitmapdata = bos.toByteArray();
 
                     FileOutputStream fos = null;
@@ -254,6 +255,8 @@ public class ListEventFragment extends Fragment {
             Event event = realm.where(Event.class).equalTo("event_uuid", ev1.getEvent_uuid()).findFirst();
             if(event!=null) {
                 is_Match = false;
+              //  Constants.dismissProgress();
+
                 Toast.makeText(context,"Event already imported.",Toast.LENGTH_SHORT).show();
                 Log.e("is_Match", "" + is_Match);
 
@@ -263,6 +266,8 @@ public class ListEventFragment extends Fragment {
                // importFile(is_Match,ev1,get_file_path);
                 if(connectionDetector.isConnectingToInternet()) {
                     if (!Pref.getValue(context, "add_display", "").equalsIgnoreCase("0")) {
+
+
                         showInterstitial();
                         final boolean finalIs_Match = is_Match;
                         mInterstitialAd.setAdListener(new AdListener() {
@@ -271,6 +276,8 @@ public class ListEventFragment extends Fragment {
                             @Override
                             public void onAdClosed() {
                                 super.onAdClosed();
+
+                                Constants.dismissProgress();
                                 importFile(finalIs_Match,ev1,get_file_path);
 
 
@@ -297,15 +304,23 @@ public class ListEventFragment extends Fragment {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             Log.e("test","111");
+           //Constants.dismissProgress();
+
         } catch (StreamCorruptedException e)
         {
+           // Constants.dismissProgress();
+
             Log.e("test","222");
             Toast.makeText(context,"Inappropriate file contain.",Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
+           // Constants.dismissProgress();
+
             Log.e("test","333");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+          //  Constants.dismissProgress();
+
             Log.e("test","444");
         }
 
@@ -365,6 +380,7 @@ public class ListEventFragment extends Fragment {
     private void showInterstitial() {
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
+
             //AddDatabase();
         }
 
@@ -446,6 +462,7 @@ public class ListEventFragment extends Fragment {
         super.onResume();
 
         ((DashBoardActivity)context).slidingMenu.setSlidingEnabled(true);
+        Pref.setValue(context,"last_open","list");
 
     }
 

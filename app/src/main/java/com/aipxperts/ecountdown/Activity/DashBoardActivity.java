@@ -77,15 +77,13 @@ public class DashBoardActivity extends FragmentActivity {
     private PendingIntent pendingIntent, pendingIntent1;
     ConnectionDetector connectionDetector;
     IntentFilter s_intentFilter;
+    String updatedCategoryId="",updatedCategoryName="",updatedCategoryColor="";
     MyReceiver myReceiver;
     int slide_pos_menu;
     /**
      * slide menu
      */
     public SlidingMenu slidingMenu;
-    boolean is_alarm = false;
-    File storeDirectory;
-
     public InterstitialAd mInterstitialAd;
     AdRequest adRequest;
     String get_file_path = null;
@@ -289,7 +287,6 @@ public class DashBoardActivity extends FragmentActivity {
             }
         }
     }
-
     private void preview() {
         mBinding.includeHeader.imgOptionMenu.setVisibility(View.VISIBLE);
         if (Pref.getValue(DashBoardActivity.this, "add_display", "").equalsIgnoreCase("0")) {
@@ -301,11 +298,11 @@ public class DashBoardActivity extends FragmentActivity {
 
         ListEventFragment fragment = new ListEventFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).commit();
+        Pref.setValue(DashBoardActivity.this,"last_open","list");
         //  Pref.setValue(DashBoardActivity.this, "cur_fragment", "1");
 
         //}
     }
-
     /**
      * set for drawer
      */
@@ -359,28 +356,34 @@ public class DashBoardActivity extends FragmentActivity {
         // slidingMenuToggle();
         slide_pos_menu = position;
         if (position == 0) {
-            if (!Pref.getValue(DashBoardActivity.this, "drawer_value", "").equals("0")) {
+            if(!Pref.getValue(DashBoardActivity.this,"last_open","").equals("list"))
+            {
                 if (Pref.getValue(DashBoardActivity.this, "add_display", "").equalsIgnoreCase("0")) {
                     mBinding.adView.setVisibility(View.VISIBLE);
                 } else {
                     mBinding.adView.setVisibility(View.GONE);
                 }
 
+
                 ListEventFragment fragment = new ListEventFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
-
+                Pref.setValue(DashBoardActivity.this,"last_open","list");
             }
 
+
         } else if (position == 1) {
-            if (!Pref.getValue(DashBoardActivity.this, "drawer_value", "").equals("1")) {
+
+            if(!Pref.getValue(DashBoardActivity.this,"last_open","").equals("setting"))
+            {
                 if (Pref.getValue(DashBoardActivity.this, "add_display", "").equalsIgnoreCase("1")) {
                     mBinding.adView.setVisibility(View.VISIBLE);
                 } else {
                     mBinding.adView.setVisibility(View.GONE);
                 }
+
                 SettingFragment fragment = new SettingFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
-
+                Pref.setValue(DashBoardActivity.this,"last_open","setting");
             }
 
         } else if (position == 2) {
@@ -388,135 +391,7 @@ public class DashBoardActivity extends FragmentActivity {
 
         } else if (position == 3) {
             rateApp();
-        }/* else if (position == 4) {
-            *//**
-         * get all download location and get all Ecountdown name file
-         *//*
-            ArrayList<String> file_list = new ArrayList<String>();
-
-          *//*  File sdcard =  new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
-*//*
-         *//*   if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
-            {
-                File dir= new File(android.os.Environment.getExternalStorageDirectory()+"");
-                walkdir(dir);
-
-            }else
-            {
-
-            }*//*
-            File sdcard = new File(Environment.getExternalStorageDirectory() + "");
-
-
-            String name = null;
-            for (File f : sdcard.listFiles()) {
-                if (f.isFile())
-                    name = f.getName();
-                file_list.add(name);
-                // do whatever you want with filename
-            }
-
-            ArrayList<String> file_new_list = new ArrayList<String>();
-            if (file_list.size() > 0)
-                for (int i = 0; i < file_list.size(); i++) {
-                    if (file_list.get(i) != null) {
-                        if (file_list.get(i).startsWith("Ecount")) {
-                            Log.e("name", "" + file_list.get(i));
-                            if (!file_new_list.contains(file_list.get(i))) {
-                                file_new_list.add(file_list.get(i));
-                            }
-                        }
-                    }
-                }
-            for (int j = 0; j < file_new_list.size(); j++) {
-                File file1 = new File(sdcard, file_new_list.get(j));
-                FileInputStream fi = null;
-                try {
-                    fi = new FileInputStream(file1);
-
-                    ObjectInputStream oi = new ObjectInputStream(fi);
-                    final Event ev1 = (Event) oi.readObject();
-
-                    *//**
-         * this is for store encodedstring in file path
-         *//*
-                    if (!ev1.getEvent_image().equalsIgnoreCase("")) {
-
-                        storeDirectory = new File("/sdcard/Android/data/" + getPackageName() + "/");
-                        if (!storeDirectory.exists()) {
-                            storeDirectory.mkdirs();
-                        }
-                        String timeStamp = "/" + TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) + ".jpg";
-
-                        final File file = new File(storeDirectory + timeStamp);
-                        if (!file.exists()) {
-                            try {
-                                file.createNewFile();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        Bitmap bitmap = decodeBase64(ev1.getEvent_image());
-                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 0 *//*ignored for PNG*//*, bos);
-                        byte[] bitmapdata = bos.toByteArray();
-
-                        FileOutputStream fos = null;
-                        try {
-                            fos = new FileOutputStream(file);
-                            fos.write(bitmapdata);
-                            fos.flush();
-                            fos.close();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        get_file_path = file.getAbsolutePath();
-                    }
-                    *//**
-         * generate new share event database
-         *//*
-                    ShareEvent shareEvent = realm.where(ShareEvent.class).equalTo("s_event_uuid", ev1.getEvent_uuid()).findFirst();
-                    if (shareEvent == null) {
-                        realm.executeTransaction(new Realm.Transaction() {
-                            @Override
-                            public void execute(Realm realm) {
-                                Long tsLong = System.currentTimeMillis() / 1000;
-                                String ts = tsLong.toString();
-                                // Add a Category
-                                ShareEvent S_event = realm.createObject(ShareEvent.class);
-
-                                S_event.setS_event_uuid(ev1.getEvent_uuid());
-                                S_event.setS_event_name(ev1.getEvent_name());
-                                S_event.setS_event_description(ev1.getEvent_description());
-                                if (!ev1.getEvent_image().equalsIgnoreCase("")) {
-                                    S_event.setS_event_image(get_file_path);
-                                } else {
-                                    S_event.setS_event_image(ev1.getEvent_image());
-                                }
-                                S_event.setS_date(ev1.getDate());
-                                S_event.setS_Category("Share");
-                                S_event.setS_CategoryColor(ev1.getCategoryColor());
-                                S_event.setS_operation("1");
-                            }
-                        });
-                    }
-
-                    file1.delete();
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-            SharedEventFragment fragment = new SharedEventFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
-        }*/
+        }
     }
 
     private void getAllFilesOfDir(File directory) {
@@ -653,6 +528,8 @@ public class DashBoardActivity extends FragmentActivity {
             }
         } else if (requestCode == 100 || resultCode == RESULT_OK) {
             if (getCurrentFragment() instanceof ListEventFragment) {
+
+                Constants.showProgress(DashBoardActivity.this);
                 //   final String docId = DocumentsContract.getDocumentId(data.getData());
                 // final String[] split = docId.split(":");
                 // if(split[1].toString().contains("EcountDown_")) {
@@ -677,8 +554,6 @@ public class DashBoardActivity extends FragmentActivity {
                                 } catch (URISyntaxException e) {
                                     e.printStackTrace();
                                 }
-
-
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -861,7 +736,27 @@ public class DashBoardActivity extends FragmentActivity {
         //  unregisterReceiver(myReceiver);
 
     }
+    public String getcategoryID(){
 
+        return updatedCategoryId;
+    }
+    public void setCategoryId(String id){
+        this.updatedCategoryId= id;
+    }
+    public String getcategoryName(){
+
+        return updatedCategoryName;
+    }
+    public void setCategoryName(String name){
+        this.updatedCategoryName= name;
+    }
+    public String getcategoryColor(){
+
+        return updatedCategoryColor;
+    }
+    public void setCategoryColor(String color){
+        this.updatedCategoryColor= color;
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

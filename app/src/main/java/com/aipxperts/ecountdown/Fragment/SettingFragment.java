@@ -9,6 +9,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -568,8 +569,9 @@ public class SettingFragment extends Fragment  implements BillingProcessor.IBill
                     }else{
                         Pref.setValue(context,"add_display","1");
                     }
-                    getActivity().getSupportFragmentManager().popBackStack();
+
                     dialog.cancel();
+                    getActivity().getSupportFragmentManager().popBackStack();
                 }
             });
         }
@@ -607,14 +609,14 @@ public class SettingFragment extends Fragment  implements BillingProcessor.IBill
                             ((DashBoardActivity)context).slidingMenu.toggle();
                         }
                         else{
-                            FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+                            FragmentManager fragmentManager=((FragmentActivity)context).getSupportFragmentManager();
 
                             for(int i=0;i<fragmentManager.getBackStackEntryCount();i++){
                                 fragmentManager.popBackStack();
                             }
 
                             ListEventFragment fragment = new ListEventFragment();
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).commit();
+                            ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().add(R.id.frame_main_container, fragment).commit();
                             //getActivity().getSupportFragmentManager().popBackStack();
                         }
                         return true;

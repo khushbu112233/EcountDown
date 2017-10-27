@@ -92,8 +92,12 @@ public class CategoryFragment extends Fragment {
                     id1=id;
                     color1=color;
                     selected_color= color1;
-                    UpdateCategory(id1);
+                 //   UpdateCategory(id1);
                     Pref.setValue(context,"updated","1");
+                    ((DashBoardActivity)context).setCategoryId(id);
+                    ((DashBoardActivity)context).setCategoryName(name);
+                    ((DashBoardActivity)context).setCategoryColor(color);
+
                     ((FragmentActivity)context).getSupportFragmentManager().popBackStack();
 
                 }
@@ -112,17 +116,7 @@ public class CategoryFragment extends Fragment {
                 }
             }
         };
-       /* mBinding.txtDone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!selected_color.equalsIgnoreCase(""))
-                {
-                    UpdateCategory(id1);
-                     Pref.setValue(context,"updated","1");
-                    ((FragmentActivity)context).getSupportFragmentManager().popBackStack();
-                }
-            }
-        });*/
+
         categoryAdapter = new CategoryCustomAdapter(context,categoryArrayList,cat_name);
         mBinding.gridCategory.setAdapter(categoryAdapter);
         categoryAdapter.onClickTick(onClickTick);
@@ -220,7 +214,7 @@ public class CategoryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 int count=0;
-                if(edt_event_category.getText().toString().equalsIgnoreCase(""))
+                if(edt_event_category.getText().toString().trim().equalsIgnoreCase(""))
                 {
                     count++;
                     Toast.makeText(context,"Please add category name.",Toast.LENGTH_SHORT).show();
